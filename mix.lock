@@ -1,0 +1,4 @@
+%{
+  "gen_smtp": {:hex, :gen_smtp, "1.2.0", "9cfc75c72a8821588b9b9fe947ae5ab2aed95a052b81237e0928633a13276fd3", [:rebar3], [{:ranch, ">= 1.8.0", [hex: :ranch, repo: "hexpm", optional: false]}], "hexpm", "5ee0375680bca8f20c4d85f58c2894441443a743355430ff33a783fe03296779"},
+  "ranch": {:hex, :ranch, "2.1.0", "2261f9ed9574dcfcc444106b9f6da155e6e540b2f82ba3d42b339b93673b72a3", [:make, :rebar3], [], "hexpm", "244ee3fa2a6175270d8e1fc59024fd9dbc76294a321057de8f803b1479e76916"},
+}
