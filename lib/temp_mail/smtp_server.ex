@@ -32,28 +32,58 @@ defmodule TempMail.SMTPServer do
   end
 
   def handle_DATA(from, to, data, state) do
-    IO.puts("Received mail from #{from} to #{to}")
-    IO.puts("Data: #{data}")
+    # Parse the email
+    {:ok, email} = :mimemail.decode(data)
 
-    # Simple parsing of headers and body
-    [headers, body] = String.split(data, "\r\n\r\n", parts: 2)
-    parsed_headers = parse_headers(headers)
+    # Extract attachments
+    attachments = extract_attachments(email)
 
-    TempMail.EmailChannel.broadcast_email(%{
+    # Prepare email content
+    email_content = %{
       from: from,
       to: to,
-      subject: Map.get(parsed_headers, "Subject", ""),
-      body: body
-    })
+      subject: get_subject(email),
+      body: get_text_body(email),
+      attachments: attachments
+    }
 
+    TempMail.EmailChannel.broadcast_email(email_content)
     {:ok, "250 ok", state}
   end
 
-  defp parse_headers(headers) do
-    headers
-    |> String.split("\r\n")
-    |> Enum.map(&String.split(&1, ": ", parts: 2))
-    |> Enum.reduce(%{}, fn [key, value], acc -> Map.put(acc, key, value) end)
+  defp extract_attachments({_type, _subtype, headers, _params, parts}) do
+    Enum.flat_map(parts, fn part ->
+      case part do
+        {_type, _subtype, headers, params, content} ->
+          case :proplists.get_value("Content-Disposition", headers) do
+            :undefined -> []
+            disposition ->
+              if String.starts_with?(disposition, "attachment") do
+                [%{
+                  filename: :proplists.get_value("filename", params),
+                  content: Base.encode64(content),
+                  content_type: :proplists.get_value("Content-Type", headers)
+                }]
+              else
+                []
+              end
+          end
+        _ -> []
+      end
+    end)
+  end
+
+  defp get_subject({_type, _subtype, headers, _params, _parts}) do
+    :proplists.get_value("Subject", headers, "")
+  end
+
+  defp get_text_body({_type, _subtype, _headers, _params, parts}) do
+    Enum.find_value(parts, fn part ->
+      case part do
+        {"text", "plain", _headers, _params, content} -> content
+        _ -> nil
+      end
+    end) || ""
   end
 
   def handle_RSET(state) do
