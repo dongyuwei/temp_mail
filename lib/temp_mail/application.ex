@@ -3,15 +3,13 @@ defmodule TempMail.Application do
 
   def start(_type, _args) do
     children = [
+      TempMail.Endpoint,
+      {Phoenix.PubSub, name: TempMail.PubSub},
       %{
         id: :gen_smtp_server,
         start: {:gen_smtp_server, :start, [
           TempMail.SMTPServer,
-          [
-            port: 2525,
-            domain: "localhost",
-            protocol: :tcp
-          ]
+          [[port: 2525, domain: "localhost", protocol: :tcp]]
         ]},
         type: :worker,
         restart: :permanent,

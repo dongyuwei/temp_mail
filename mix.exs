@@ -22,7 +22,11 @@ defmodule TempMail.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:gen_smtp, "~> 1.2"}
+      {:gen_smtp, "~> 1.2"},
+      {:phoenix, "~> 1.6.0"},  # Use 1.6 instead of 1.7
+      {:phoenix_pubsub, "~> 2.0"},
+      {:plug_cowboy, "~> 2.5"},
+      {:jason, "~> 1.2"},
     ]
   end
 end
