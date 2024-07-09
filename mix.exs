@@ -27,6 +27,7 @@ defmodule TempMail.MixProject do
       {:phoenix_pubsub, "~> 2.0"},
       {:plug_cowboy, "~> 2.5"},
       {:jason, "~> 1.2"},
+      {:iconv, "~> 1.0.10"}
     ]
   end
 end
