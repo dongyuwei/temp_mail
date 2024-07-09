@@ -1,7 +1,7 @@
 # TempMail
 
 ## Start App
-mix run --no-halt
+mix phx.server
 
 ## Send email to test the App
 python3 test/send_email.py
