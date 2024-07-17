@@ -3,8 +3,8 @@ defmodule TempMail.Application do
 
   def start(_type, _args) do
     children = [
-      TempMail.Endpoint,
-      {Phoenix.PubSub, name: TempMail.PubSub},
+      # TempMail.Endpoint,
+      # {Phoenix.PubSub, name: TempMail.PubSub},
       TempMail.EmailStore,
       {Plug.Cowboy, scheme: :http, plug: TempMail.API, options: [port: 4000]},
       %{

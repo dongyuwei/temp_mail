@@ -46,7 +46,6 @@ defmodule TempMail.SMTPServer do
           body: body,
           attachments: []
         }
-        TempMail.EmailChannel.broadcast_email(email_content)
         {:ok, "250 ok", state}
 
       {_type, _subtype, headers, params, parts} = email ->
@@ -59,7 +58,6 @@ defmodule TempMail.SMTPServer do
           body: get_text_body(email),
           attachments: attachments
         }
-        TempMail.EmailChannel.broadcast_email(email_content)
         {:ok, "250 ok", state}
 
       error ->
