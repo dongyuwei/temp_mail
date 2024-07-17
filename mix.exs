@@ -24,10 +24,11 @@ defmodule TempMail.MixProject do
     [
       {:gen_smtp, "~> 1.2"},
       {:phoenix, "~> 1.6.0"},  # Use 1.6 instead of 1.7
-      {:phoenix_pubsub, "~> 2.0"},
+      # {:phoenix_pubsub, "~> 2.0"},
       {:plug_cowboy, "~> 2.5"},
       {:jason, "~> 1.2"},
-      {:iconv, "~> 1.0.10"}
+      {:iconv, "~> 1.0.10"},
+      {:timex, "~> 3.0"}
     ]
   end
 end

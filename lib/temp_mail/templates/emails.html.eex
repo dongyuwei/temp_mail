@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emails for <%= @address %></title>
+</head>
+<body>
+    <h1>Emails for <%= @address %></h1>
+    <ul>
+        <%= for email <- @emails do %>
+            <li>
+                <strong>From:</strong> <%= email.from %><br>
+                <strong>To:</strong> <%= Enum.join(email.to, ", ") %><br>
+                <strong>Received at:</strong> <%= Timex.format!(Timex.from_unix(email.received_at, :seconds), "{ISO:Extended}") %><br>
+                <pre><%= email.data %></pre>
+            </li>
+        <% end %>
+    </ul>
+</body>
+</html>
