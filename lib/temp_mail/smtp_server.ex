@@ -1,5 +1,6 @@
 defmodule TempMail.SMTPServer do
   @behaviour :gen_smtp_server_session
+  require Logger
 
   def init(hostname, session_count, address, options) do
     banner = ["#{hostname} ESMTP TempMail"]
@@ -32,6 +33,9 @@ defmodule TempMail.SMTPServer do
   end
 
   def handle_DATA(from, to, data, state) do
+    Logger.info("handle_DATA, Received email from #{from} to #{Enum.join(to, ", ")}")
+    TempMail.EmailStore.store_email(from, to, data)
+
     case :mimemail.decode(data) do
       {"text", subtype, headers, params, body} ->
         # Simple text email without attachments

@@ -5,7 +5,7 @@ from email.mime.text import MIMEText
 message = MIMEText("This is a test email from Python.")
 message['Subject'] = "Test email"
 message['From'] = "sender@example.com"
-message['To'] = "recipient@example.com"
+message['To'] = "yuwei@localhost"
 
 # Send the message
 server = smtplib.SMTP('localhost', 2525)
