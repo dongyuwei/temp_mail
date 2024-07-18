@@ -28,7 +28,9 @@ defmodule TempMail.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:jason, "~> 1.2"},
       {:iconv, "~> 1.0.10"},
-      {:timex, "~> 3.0"}
+      {:timex, "~> 3.0"},
+      {:ecto_sql, "~> 3.0"},
+      {:ecto_sqlite3, "~> 0.7"}
     ]
   end
 end

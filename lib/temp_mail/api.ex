@@ -1,6 +1,7 @@
 defmodule TempMail.API do
   use Plug.Router
   require EEx
+  alias TempMail.EmailStore
 
   EEx.function_from_file(:defp, :render_emails, "lib/temp_mail/templates/emails.html.eex", [:assigns])
 
@@ -8,7 +9,7 @@ defmodule TempMail.API do
   plug :dispatch
 
   get "/emails/:address" do
-    emails = TempMail.EmailStore.get_emails(address)
+    emails = EmailStore.get_emails(address)
     assigns = %{address: address, emails: emails}
     conn
     |> put_resp_content_type("text/html")
