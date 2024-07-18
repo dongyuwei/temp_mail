@@ -1,16 +1,21 @@
 defmodule TempMail.Application do
   use Application
+  require Logger
 
   def start(_type, _args) do
+    smtp_config = Application.get_env(:temp_mail, TempMail.SMTPServer)
+    smtp_port = smtp_config[:port]
+    smtp_domain = smtp_config[:domain]
+    Logger.info("Starting SMTP server on port #{smtp_port} with domain #{smtp_domain}")
+
     children = [
       TempMail.Repo,
-      # TempMail.EmailStore,
       {Plug.Cowboy, scheme: :http, plug: TempMail.API, options: [port: 4000]},
       %{
         id: :gen_smtp_server,
         start: {:gen_smtp_server, :start, [
           TempMail.SMTPServer,
-          [[port: 2525, domain: "localhost", protocol: :tcp]]
+          [[port: smtp_port, domain: smtp_domain, protocol: :tcp]]
         ]},
         type: :worker,
         restart: :permanent,

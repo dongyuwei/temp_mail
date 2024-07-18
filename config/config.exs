@@ -9,4 +9,5 @@ config :temp_mail,
   ecto_repos: [TempMail.Repo]
 
 config :temp_mail, TempMail.SMTPServer,
-  port: 2525
+  port: 2525,
+  domain: "localhost"
