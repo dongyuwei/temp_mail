@@ -3,6 +3,7 @@ defmodule TempMail.SMTPServer do
   require Logger
 
   def init(hostname, session_count, address, options) do
+    Logger.debug("SMTP server initialized with options: #{inspect(options)}, hostname: #{inspect(hostname)}, address: #{inspect(address)}")
     banner = ["#{hostname} ESMTP TempMail"]
     state = %{options: options, hostname: hostname}
     {:ok, banner, state}

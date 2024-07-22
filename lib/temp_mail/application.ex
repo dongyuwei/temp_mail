@@ -3,10 +3,21 @@ defmodule TempMail.Application do
   require Logger
 
   def start(_type, _args) do
-    smtp_config = Application.get_env(:temp_mail, TempMail.SMTPServer)
+    smtp_config = Application.get_env(:temp_mail, TempMail.SMTPServer, [])
     smtp_port = smtp_config[:port]
     smtp_domain = smtp_config[:domain]
+
+    Logger.debug("SMTP configuration: #{inspect(smtp_config)}")
     Logger.info("Starting SMTP server on port #{smtp_port} with domain #{smtp_domain}")
+
+    smtp_options = [
+      { :port, smtp_port },
+      { :domain, smtp_domain },
+      { :protocol, :tcp },
+      { :sessionoptions, [ { :callbackoptions, [ { :port, smtp_port, :domain, smtp_domain } ] } ] }
+    ]
+
+    Logger.debug("SMTP server options: #{inspect(smtp_options)}")
 
     children = [
       TempMail.Repo,
@@ -15,7 +26,7 @@ defmodule TempMail.Application do
         id: :gen_smtp_server,
         start: {:gen_smtp_server, :start, [
           TempMail.SMTPServer,
-          [[port: smtp_port, domain: smtp_domain, protocol: :tcp]]
+          smtp_options
         ]},
         type: :worker,
         restart: :permanent,
