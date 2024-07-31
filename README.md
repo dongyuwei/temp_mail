@@ -1,7 +1,10 @@
 # TempMail
+Temporary email service using gen_smtp, Elixir, and SQLite.
 
 ## Start App
-mix run --no-halt
+- Install Erlang/OTP 27 and Elixir(1.16.3)
+- mix deps.get
+- mix run --no-halt
 
 ## Send email to test the App
 python3 test/send_email.py
