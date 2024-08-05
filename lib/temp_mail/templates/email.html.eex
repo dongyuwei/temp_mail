@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temporary Email: <%= @email %></title>
+</head>
+<body>
+  <h1>Your Temporary Email: <%= @email %></h1>
+  <div id="emails"></div>
+  <script>
+    function fetchEmails() {
+      fetch(`/emails/<%= @email %>`)
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('emails').innerHTML = data;
+        });
+    }
+
+    setInterval(fetchEmails, 5000);
+    fetchEmails();
+  </script>
+</body>
+</html>
