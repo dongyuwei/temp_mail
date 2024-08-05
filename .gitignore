@@ -32,3 +32,6 @@ temp_mail-*.tar
 
 .idea/
 *.iml
+
+all_files_contents.txt
+concat-files.sh
