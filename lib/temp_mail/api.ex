@@ -14,9 +14,13 @@ defmodule TempMail.API do
   get "/emails/:address" do
     emails = EmailStore.get_emails(address)
     assigns = %{address: address, emails: emails}
-    conn
-    |> put_resp_content_type("text/html")
-    |> send_resp(200, render_emails(assigns))
+    if Enum.empty?(emails) do
+      send_resp(conn, 404, "Waiting email for #{address}")
+    else
+      conn
+      |> put_resp_content_type("text/html")
+      |> send_resp(200, render_emails(assigns))
+    end
   end
 
   get "/generate" do

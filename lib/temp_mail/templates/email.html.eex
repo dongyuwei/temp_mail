@@ -7,18 +7,29 @@
 </head>
 <body>
   <h1>Your Temporary Email: <%= @email %></h1>
-  <div id="emails"></div>
+  <div id="emails">Waiting emails from <%= @email %> ... </div>
   <script>
+    let timer;
     function fetchEmails() {
       fetch(`/emails/<%= @email %>`)
-        .then(response => response.text())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
         .then(data => {
+          clearTimeout(timer);
           document.getElementById('emails').innerHTML = data;
+        })
+        .catch((e) => {
+          console.log(e, ', polling...')
+          timer = setTimeout(fetchEmails, 5000);
         });
     }
 
-    setInterval(fetchEmails, 5000);
     fetchEmails();
+
   </script>
 </body>
 </html>
