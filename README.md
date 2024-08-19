@@ -15,7 +15,7 @@ python3 test/send_email.py the_generated_temporary_email_address
 ## get email
 Eg: http://localhost:4000/emails/{the_generated_temporary_email_address}
 
-## Set domain and port of the smtp server(see config/cofig.exs)
+## Set domain and port of the smtp server(see config/config.exs)
 
 ```exs
 config :temp_mail, TempMail.SMTPServer,

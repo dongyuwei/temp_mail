@@ -1,0 +1,15 @@
+serverAddr = "45.63.11.143"
+serverPort = 7000
+auth.token = "change auth token"
+
+[[proxies]]
+name = "web"
+type = "http"
+localPort = 4000
+customDomains = ["tmpmail.work"]
+
+[[proxies]]
+name = "smtp"
+type = "tcp"
+localPort = 2525
+remotePort = 25
