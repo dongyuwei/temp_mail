@@ -23,7 +23,7 @@ defmodule TempMail.API do
     end
   end
 
-  get "/generate" do
+  get "/" do
     email = generate_temporary_email()
     assigns = %{email: email}
     conn

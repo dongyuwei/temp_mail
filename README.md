@@ -7,7 +7,7 @@ Temporary email service using gen_smtp, Elixir, and SQLite.
 - mix run --no-halt
 
 ## Generate temporary email address and waiting for the receipt of the email. 
-http://localhost:4000/generate
+http://localhost:4000/
 
 ## Send email to test the App
 python3 test/send_email.py the_generated_temporary_email_address
