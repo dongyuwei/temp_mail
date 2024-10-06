@@ -36,71 +36,8 @@ defmodule TempMail.SMTPServer do
   def handle_DATA(from, to, data, state) do
     Logger.info("handle_DATA, Received email from #{from} to #{Enum.join(to, ", ")}")
     TempMail.EmailStore.store_email(from, to, data)
-
-    case :mimemail.decode(data) do
-      {"text", subtype, headers, params, body} ->
-        # Simple text email without attachments
-        email_content = %{
-          from: from,
-          to: to,
-          subject: get_subject({nil, nil, headers, params, nil}),
-          body: body,
-          attachments: []
-        }
-        {:ok, "250 ok", state}
-
-      {_type, _subtype, headers, params, parts} = email ->
-        # Email with potential attachments
-        attachments = extract_attachments(email)
-        email_content = %{
-          from: from,
-          to: to,
-          subject: get_subject(email),
-          body: get_text_body(email),
-          attachments: attachments
-        }
-        {:ok, "250 ok", state}
-
-      error ->
-        {:error, "554 Error: Unable to process email", state}
-    end
+    {:ok, "250 ok", state}
   end
-
-  defp extract_attachments({_type, _subtype, _headers, _params, parts}) when is_list(parts) do
-    Enum.flat_map(parts, fn
-      {"text", _subtype, _headers, _params, _content} ->
-        []
-      {_type, _subtype, headers, params, content} ->
-        case :proplists.get_value("Content-Disposition", headers) do
-          disposition when is_binary(disposition) ->
-            if String.starts_with?(disposition, "attachment") do
-              [%{
-                filename: :proplists.get_value("filename", params),
-                content: Base.encode64(content),
-                content_type: :proplists.get_value("Content-Type", headers)
-              }]
-            else
-              []
-            end
-          _ ->
-            []
-        end
-    end)
-  end
-  defp extract_attachments(_), do: []
-
-  defp get_subject({_type, _subtype, headers, _params, _parts}) do
-    :proplists.get_value("Subject", headers, "")
-  end
-
-  defp get_text_body({_type, _subtype, _headers, _params, parts}) when is_list(parts) do
-    Enum.find_value(parts, fn
-      {"text", "plain", _headers, _params, content} -> content
-      _ -> nil
-    end) || ""
-  end
-  defp get_text_body({"text", "plain", _headers, _params, content}), do: content
-  defp get_text_body(_), do: ""
 
   def handle_RSET(state) do
     {:ok, state}
