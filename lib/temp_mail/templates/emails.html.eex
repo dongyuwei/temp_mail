@@ -12,8 +12,9 @@
             <li>
                 <strong>From:</strong> <%= email.from %><br>
                 <strong>To:</strong> <%= Enum.join(email.to, ", ") %><br>
+                <strong>Subject:</strong> <%= email.subject %><br>
+                <strong>Content:</strong> <%= email.content %><br>
                 <strong>Received at:</strong> <%= Timex.format!(Timex.from_unix(email.received_at, :seconds), "{ISO:Extended}") %><br>
-                <pre><%= email.data %></pre>
             </li>
         <% end %>
     </ul>

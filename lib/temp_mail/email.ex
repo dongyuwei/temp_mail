@@ -6,6 +6,8 @@ defmodule TempMail.Email do
     field :from, :string
     field :to, {:array, :string}
     field :data, :string
+    field :subject, :string
+    field :content, :string
     field :received_at, :integer
 
     timestamps()

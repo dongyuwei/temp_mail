@@ -35,3 +35,4 @@ temp_mail-*.tar
 
 all_files_contents.txt
 concat-files.sh
+.aider*

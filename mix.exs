@@ -30,7 +30,8 @@ defmodule TempMail.MixProject do
       {:iconv, "~> 1.0.10"},
       {:timex, "~> 3.0"},
       {:ecto_sql, "~> 3.0"},
-      {:ecto_sqlite3, "~> 0.7"}
+      {:ecto_sqlite3, "~> 0.7"},
+      {:tzdata, "~> 1.1.2", override: true}
     ]
   end
 end
