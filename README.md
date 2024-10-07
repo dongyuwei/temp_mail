@@ -4,6 +4,7 @@ Temporary email service using gen_smtp, Elixir, and SQLite.
 ## Start App
 - Install Erlang/OTP 27 and Elixir(1.16.3)
 - mix deps.get
+- mix ecto.migrate
 - mix run --no-halt
 
 ## Generate temporary email address and waiting for the receipt of the email. 
